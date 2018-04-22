@@ -18,19 +18,34 @@ public class EventObserver implements Serializable {
     
     @Inject
     private Logger logger;
+
+
+    void plainEvent(@Observes  EventData eventData) {
+        //Persist in databse, send to another application outside your app
+        //Essentially you can do whatever you want with the event data here.
+        //We will just log it
+        logger.log(Level.INFO, "User {0} logged in at {1}. Logged from plain event observer",
+                new Object[]{eventData.getEmail(), eventData.getLoginTime()});
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+    }
+
     
-//    void userLoggedIn(@Observes @PopularStand EventData eventData) {
-//        //Persist in databse, send to another application outside your app
-//        //Essentially you can do whatever you want with the event data here.
-//        //We will just log it
-//        logger.log(Level.INFO, "User {0} logged in at {1}",
-//                new Object[]{eventData.getEmail(), eventData.getLoginTime()});
-//        try {
-//            Thread.sleep(6000);
-//        } catch (InterruptedException e) {
-//            logger.log(Level.SEVERE, null, e);
-//        }
-//    }
+    void userLoggedIn(@Observes @PopularStand EventData eventData) {
+        //Persist in databse, send to another application outside your app
+        //Essentially you can do whatever you want with the event data here.
+        //We will just log it
+        logger.log(Level.INFO, "User {0} logged in at {1}",
+                new Object[]{eventData.getEmail(), eventData.getLoginTime()});
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+    }
 
 
     void asyncObserver(@ObservesAsync @PopularStand EventData eventData) {

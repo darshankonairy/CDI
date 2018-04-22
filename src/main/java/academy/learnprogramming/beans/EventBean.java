@@ -15,10 +15,12 @@ import java.util.concurrent.CompletionStage;
 @Web
 public class EventBean {
 
-    @Inject
-    private EventData eventData;
+
     @Inject
     private User user;
+
+    @Inject
+    Event<EventData> plainEvent;
 
     @Inject
     @PopularStand
@@ -28,14 +30,23 @@ public class EventBean {
     @Admin
     private Event<EventData> conditionalEvent;
 
+
+
     public void login() {
         //Do credentials checking to login in user then fire login event
         //someSecurityManager.loginUser(user.getEmail, user.getPassword)
 
+
+
+        plainEvent.fire(new EventData(user.getEmail(), LocalDateTime.now()));
+
+
+
+
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now);
 
-//        eventDataEvent.fire(new EventData(user.getEmail(), LocalDateTime.now()));
+        eventDataEvent.fire(new EventData(user.getEmail(), LocalDateTime.now()));
         CompletionStage<EventData> fireAsync = eventDataEvent.fireAsync(new EventData(user.getEmail(), LocalDateTime.now()));
 
         long secs = ChronoUnit.SECONDS.between(now, LocalDateTime.now());
