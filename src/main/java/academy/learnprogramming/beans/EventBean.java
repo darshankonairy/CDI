@@ -7,6 +7,7 @@ import academy.learnprogramming.events.EventData;
 import academy.learnprogramming.events.User;
 
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -18,6 +19,9 @@ public class EventBean {
 
     @Inject
     private User user;
+
+    @Inject
+    Event<String> greetingEvent;
 
     @Inject
     Event<EventData> plainEvent;
@@ -36,7 +40,7 @@ public class EventBean {
         //Do credentials checking to login in user then fire login event
         //someSecurityManager.loginUser(user.getEmail, user.getPassword)
 
-
+        greetingEvent.fire("Hello from priority");
 
         plainEvent.fire(new EventData(user.getEmail(), LocalDateTime.now()));
 
@@ -47,7 +51,12 @@ public class EventBean {
         System.out.println(now);
 
         eventDataEvent.fire(new EventData(user.getEmail(), LocalDateTime.now()));
+
+
         CompletionStage<EventData> fireAsync = eventDataEvent.fireAsync(new EventData(user.getEmail(), LocalDateTime.now()));
+
+
+
 
         long secs = ChronoUnit.SECONDS.between(now, LocalDateTime.now());
 
