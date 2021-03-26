@@ -147,3 +147,4 @@ nb-configuration.xml
 
 # Created by .ignore support plugin (hsz.mobi)
 /target/
+/.apt_generated_tests/
